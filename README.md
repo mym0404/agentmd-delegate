@@ -1,10 +1,10 @@
-# AGENTS.md Delegate
+# i-code-by-hand
 
-> For contributors who cannot add a `AGENTS.md` or `CLAUDE.md` to the projects they contribute to.
+Local AGENTS.md for developers who definitely don't use AI.
 
-Keep repo-specific agent notes outside the repo.
+Keep suspiciously useful repo notes outside the repo.
 
-Some projects do not have `AGENTS.md` or `CLAUDE.md`, and adding one just for your own agent workflow can feel too heavy. `agentmd-delegate` gives Codex and Claude a shared place to look instead:
+Some projects do not have `AGENTS.md` or `CLAUDE.md`, and adding one just for your own totally hand-written workflow can feel too heavy. `i-code-by-hand` gives Codex and Claude a shared place to look instead:
 
 ```text
 ~/.agentsmd/{owner}/{repo}/AGENTS.md
@@ -17,19 +17,19 @@ If a project already has `AGENTS.md` or `CLAUDE.md`, the local file wins. If it 
 Codex:
 
 ```sh
-npx skills add mym0404/agentmd-delegate -g -a codex -s agentmd-delegate --full-depth -y
+npx skills add mym0404/i-code-by-hand -g -a codex -s i-code-by-hand --full-depth -y
 ```
 
 Claude:
 
 ```sh
-npx skills add mym0404/agentmd-delegate -g -a claude-code -s agentmd-delegate --full-depth -y
+npx skills add mym0404/i-code-by-hand -g -a claude-code -s i-code-by-hand --full-depth -y
 ```
 
 Both:
 
 ```sh
-npx skills add mym0404/agentmd-delegate -g -a codex -a claude-code -s agentmd-delegate --full-depth -y
+npx skills add mym0404/i-code-by-hand -g -a codex -a claude-code -s i-code-by-hand --full-depth -y
 ```
 
 The `skills` CLI installs the skill into the selected agent's global skill folder. Create `~/.agentsmd` when you add the first repo memory file.
@@ -39,8 +39,8 @@ The `skills` CLI installs the skill into the selected agent's global skill folde
 The skill prefers the GitHub remote name:
 
 ```text
-git@github.com:mym0404/agentmd-delegate.git -> ~/.agentsmd/mym0404/agentmd-delegate/AGENTS.md
-https://github.com/mym0404/agentmd-delegate.git -> ~/.agentsmd/mym0404/agentmd-delegate/AGENTS.md
+git@github.com:mym0404/i-code-by-hand.git -> ~/.agentsmd/mym0404/i-code-by-hand/AGENTS.md
+https://github.com/mym0404/i-code-by-hand.git -> ~/.agentsmd/mym0404/i-code-by-hand/AGENTS.md
 ```
 
 If there is no Git remote, it uses the nearest folder that looks like a project root. If none is clear, it uses the current folder name:

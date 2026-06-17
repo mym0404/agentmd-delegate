@@ -1,0 +1,4 @@
+interface:
+  display_name: "i-code-by-hand"
+  short_description: "Local notes for hand-written code"
+  default_prompt: "Use $i-code-by-hand before coding in this repo."

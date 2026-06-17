@@ -1,9 +1,9 @@
 ---
-name: agentmd-delegate
+name: i-code-by-hand
 description: Use at the start of repository-specific coding, review, debugging, refactoring, explanation, and planning tasks to decide whether local AGENTS.md/CLAUDE.md or shared ~/.agentsmd notes apply. Use shared repo-specific notes from ~/.agentsmd when the project root does not provide AGENTS.md or CLAUDE.md. Also use when the user asks to remember, store, update, or revise repo-specific agent guidance without adding files to the project. Do not use it to replace explicit requests to create or edit project-local AGENTS.md or CLAUDE.md.
 ---
 
-# AgentMD Delegate
+# i-code-by-hand
 
 ## Overview
 
@@ -85,7 +85,7 @@ basename "$PROJECT_ROOT"
 Examples:
 
 ```text
-~/.agentsmd/mym0404/agentmd-delegate/AGENTS.md
+~/.agentsmd/mym0404/i-code-by-hand/AGENTS.md
 ~/.agentsmd/local-folder-name/AGENTS.md
 ```
 
