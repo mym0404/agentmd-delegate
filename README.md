@@ -2,10 +2,8 @@
 
 ![I Code By Hand hero](./ogimage.png)
 
-`AGENTS.md` or `CLAUDE.md` are powerful ways to instruct AI agents.
-
 > [!NOTE]
-> You can use `AGENTS.md` or `CLAUDE.md` placed in outside of the repo.
+> You can use `AGENTS.md` or `CLAUDE.md` placed in **outside of the repo**.
 
 ## Usecase 1: You're required to sneak your AI usage.
 
