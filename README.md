@@ -17,22 +17,22 @@ If a project already has `AGENTS.md` or `CLAUDE.md`, the local file wins. If it 
 Codex:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/mym0404/agentmd-delegate/main/install.sh | sh -s -- --codex
+npx skills add mym0404/agentmd-delegate -g -a codex -s agentmd-delegate --full-depth -y
 ```
 
 Claude:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/mym0404/agentmd-delegate/main/install.sh | sh -s -- --claude
+npx skills add mym0404/agentmd-delegate -g -a claude-code -s agentmd-delegate --full-depth -y
 ```
 
 Both:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/mym0404/agentmd-delegate/main/install.sh | sh -s -- --codex --claude
+npx skills add mym0404/agentmd-delegate -g -a codex -a claude-code -s agentmd-delegate --full-depth -y
 ```
 
-The installer copies the skill into the selected global skill folder and creates `~/.agentsmd`.
+The `skills` CLI installs the skill into the selected agent's global skill folder. Create `~/.agentsmd` when you add the first repo memory file.
 
 ## How it picks a memory file
 
@@ -43,7 +43,7 @@ git@github.com:mym0404/agentmd-delegate.git -> ~/.agentsmd/mym0404/agentmd-deleg
 https://github.com/mym0404/agentmd-delegate.git -> ~/.agentsmd/mym0404/agentmd-delegate/AGENTS.md
 ```
 
-If there is no Git remote, it uses the current folder name:
+If there is no Git remote, it uses the nearest folder that looks like a project root. If none is clear, it uses the current folder name:
 
 ```text
 ~/.agentsmd/current-folder/AGENTS.md

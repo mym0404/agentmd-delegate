@@ -1,6 +1,6 @@
 ---
 name: agentmd-delegate
-description: Use shared repo-specific agent notes from ~/.agentsmd when a project does not provide AGENTS.md or CLAUDE.md. Use before coding, reviewing, debugging, or updating memory in repositories that lack local agent instructions, and when the user asks to remember, store, update, or revise repo-specific agent guidance without adding files to the project.
+description: Use at the start of repository-specific coding, review, debugging, refactoring, explanation, and planning tasks to decide whether local AGENTS.md/CLAUDE.md or shared ~/.agentsmd notes apply. Use shared repo-specific notes from ~/.agentsmd when the project root does not provide AGENTS.md or CLAUDE.md. Also use when the user asks to remember, store, update, or revise repo-specific agent guidance without adding files to the project. Do not use it to replace explicit requests to create or edit project-local AGENTS.md or CLAUDE.md.
 ---
 
 # AgentMD Delegate
@@ -15,32 +15,58 @@ Global memory root:
 ~/.agentsmd
 ```
 
-## Before work
+## Decision rules
 
-1. Check the project root for local instruction files:
+| Situation | Required behavior |
+| --- | --- |
+| Project has `AGENTS.md` or `CLAUDE.md` | Follow local instructions. Do not read or apply `~/.agentsmd` for normal work. |
+| Project has no local instruction file | Check `~/.agentsmd/{repo-key}/AGENTS.md` before repo-specific work. |
+| User asks to update global memory | Update only the matching `~/.agentsmd` file unless they name a local file. |
+| User asks to create or edit local `AGENTS.md` or `CLAUDE.md` | Do exactly that local-file task. Do not redirect it to `~/.agentsmd`. |
+
+## Before repo-specific work
+
+1. Resolve the project root. Prefer the Git worktree root:
 
 ```sh
-ls AGENTS.md CLAUDE.md 2>/dev/null
+PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null || pwd)
 ```
 
-2. If either file exists, follow the local project instructions first. Read global memory only when the user asks for it or the task clearly needs repo memory outside the project.
+If that fails, inspect parent directories before accepting `pwd`. Use the nearest parent that looks like a project root, such as a directory containing `.hg`, `.svn`, `package.json`, `pyproject.toml`, `Cargo.toml`, `go.mod`, `Makefile`, or `README.md`. If no parent has a clear project marker, use the current working directory as the project root.
 
-3. If neither file exists, compute the repo key and look for:
+2. Check the project root for local instruction files:
+
+```sh
+ls "$PROJECT_ROOT/AGENTS.md" "$PROJECT_ROOT/CLAUDE.md" 2>/dev/null
+```
+
+3. If either file exists, follow the local project instructions first. Stop the delegation lookup for normal coding, review, debugging, and repo advice.
+
+4. If neither file exists, compute the repo key from the project root and look for:
 
 ```text
 ~/.agentsmd/{repo-key}/AGENTS.md
 ```
 
-4. If that file exists, read it before changing code, reviewing code, debugging, or giving repo-specific advice.
+5. If that file exists, read it before changing code, reviewing code, debugging, or giving repo-specific advice. Treat this as an automatic pre-work check; do not wait for the user to mention global memory.
 
-5. If it does not exist, do not create it unless the user asks to remember, store, update, or revise memory.
+6. If it does not exist, do not create it unless the user asks to remember, store, update, or revise memory.
+
+## Local instruction edits
+
+If the user explicitly asks to create, edit, replace, remove, or review project-local `AGENTS.md` or `CLAUDE.md`, the named local file is the target.
+
+- Do not substitute a global memory update for the requested local-file change.
+- Do not create or edit `~/.agentsmd` unless the user also asks for a global memory change.
+- Do not copy global memory into the local file unless the user asks to migrate, import, or reuse it.
+- If local instructions and global memory both exist, local instructions remain authoritative.
 
 ## Repo key
 
 Prefer the Git remote owner and repo name:
 
 ```sh
-git remote get-url origin 2>/dev/null
+git -C "$PROJECT_ROOT" remote get-url origin 2>/dev/null
 ```
 
 Normalize common GitHub remote formats to `owner/repo`:
@@ -50,10 +76,10 @@ https://github.com/owner/repo.git -> owner/repo
 git@github.com:owner/repo.git -> owner/repo
 ```
 
-If there is no usable remote, use the current working directory basename:
+If there is no usable remote, use the project root basename:
 
 ```sh
-basename "$PWD"
+basename "$PROJECT_ROOT"
 ```
 
 Examples:
@@ -73,6 +99,8 @@ When the user asks to remember or update repo-specific guidance:
 4. Write only current repo guidance that should apply in future sessions.
 5. Remove duplicate, stale, or conflicting guidance while editing.
 6. Keep local project instructions authoritative when they exist.
+
+If the user says only "remember this", "store this for this repo", or "update memory", prefer global memory. If they name `AGENTS.md`, `CLAUDE.md`, "project file", or "local instructions", edit the local file they named.
 
 Do not store secrets, credentials, tokens, or private personal data. If a requested memory entry would be risky to persist, explain the risk and ask for a safer wording.
 
