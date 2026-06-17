@@ -29,10 +29,22 @@ Use `$i-code-by-hand` to manage repo-specific instructions outside of the repo.
 ## Install
 
 ```sh
+# Global (recommended)
 npx skills add mym0404/i-code-by-hand -g -s i-code-by-hand
+
+# Project-local
+npx skills add mym0404/i-code-by-hand -s i-code-by-hand
+
+# Manual SKILL copy
+mkdir -p ~/.agents/skills/i-code-by-hand && curl -fsSL https://raw.githubusercontent.com/mym0404/i-code-by-hand/main/skills/i-code-by-hand/SKILL.md -o ~/.agents/skills/i-code-by-hand/SKILL.md
 ```
 
 ## Notes
+
+| AGENTS.md in project | Work? |
+| --- | --- |
+| O | X |
+| X | O |
 
 - Project-local instructions still take priority.
 - Missing global memory entry points are not created automatically.
